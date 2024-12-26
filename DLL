@@ -1,0 +1,104 @@
+public class DoublyLinkedListQueue<T> {
+
+    // Node class for Doubly Linked List
+    private static class Node<T> {
+        T data;
+        Node<T> next;
+        Node<T> prev;
+
+        public Node(T data) {
+            this.data = data;
+            this.next = null;
+            this.prev = null;
+        }
+    }
+
+    private Node<T> head; // Front of the queue
+    private Node<T> tail; // Rear of the queue
+    private int size;     // Size of the queue
+
+    // Constructor
+    public DoublyLinkedListQueue() {
+        head = null;
+        tail = null;
+        size = 0;
+    }
+
+    // Add element to the queue (enqueue)
+    public void enqueue(T data) {
+        Node<T> newNode = new Node<>(data);
+
+        if (tail == null) { // If queue is empty
+            head = tail = newNode;
+        } else {
+            tail.next = newNode;
+            newNode.prev = tail;
+            tail = newNode;
+        }
+        size++;
+    }
+
+    // Remove element from the queue (dequeue)
+    public T dequeue() {
+        if (head == null) { // If queue is empty
+            throw new IllegalStateException("Queue is empty");
+        }
+
+        T data = head.data;
+        head = head.next;
+
+        if (head == null) { // Queue becomes empty
+            tail = null;
+        } else {
+            head.prev = null;
+        }
+        size--;
+        return data;
+    }
+
+    // Peek the front element
+    public T peek() {
+        if (head == null) { // If queue is empty
+            throw new IllegalStateException("Queue is empty");
+        }
+        return head.data;
+    }
+
+    // Check if the queue is empty
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    // Get the size of the queue
+    public int size() {
+        return size;
+    }
+
+    // Display the elements of the queue
+    public void display() {
+        Node<T> current = head;
+        while (current != null) {
+            System.out.print(current.data + " ");
+            current = current.next;
+        }
+        System.out.println();
+    }
+
+    // Main method to test the queue
+    public static void main(String[] args) {
+        DoublyLinkedListQueue<Integer> queue = new DoublyLinkedListQueue<>();
+
+        queue.enqueue(10);
+        queue.enqueue(20);
+        queue.enqueue(30);
+
+        System.out.println("Queue elements:");
+        queue.display(); // Output: 10 20 30
+
+        System.out.println("Dequeued element: " + queue.dequeue()); // Output: 10
+        System.out.println("Peek element: " + queue.peek());        // Output: 20
+
+        System.out.println("Queue elements after dequeue:");
+        queue.display(); // Output: 20 30
+    }
+}
